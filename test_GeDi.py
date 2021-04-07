@@ -286,7 +286,7 @@ def main():
         print(text)
         print()
         
-        out = text.replace(args.prompt, '')
+        out = text.replace(raw_text, '')
         tmp['generated'] = out
 
         print('= Generation =')
