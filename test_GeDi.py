@@ -248,7 +248,8 @@ def main():
                 start_len = len(tokenizer.decode([prefix]))
         encoded_prompts=torch.LongTensor(text_ids).unsqueeze(0).to(args.device)
         print(encoded_prompts.size(1))
-        start_len = max(len(raw_text.split()), encoded_prompts.size(1))
+        start_len = len(raw_text.split())
+        print(start_len)
 
         if args.gen_type=="gedi" and args.mode=="topic":
             multi_code = tokenizer.encode(args.secondary_code)
