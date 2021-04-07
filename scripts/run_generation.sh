@@ -1,6 +1,7 @@
 
+export device_id=6
 
-python ../test_GeDi.py \
+CUDA_VISIBLE_DEVICES=$device_id python ../test_GeDi.py \
  --gen_length 200 \
  --model_type gpt2 \
  --gen_model_name_or_path gpt2-medium \
