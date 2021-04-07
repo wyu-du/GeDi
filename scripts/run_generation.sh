@@ -1,9 +1,10 @@
 
 
-python ../generate_GeDi.py \
+python ../test_GeDi.py \
  --gen_length 200 \
  --model_type gpt2 \
- --gen_model_name_or_path gpt2-xl \
+ --gen_model_name_or_path gpt2-medium \
+ --gedi_model_name_or_path ../dailydialog_GeDi_retrained/checkpoint-100000 \
  --disc_weight 30 \
  --rep_penalty_scale 10 \
  --filter_p 0.8 \
