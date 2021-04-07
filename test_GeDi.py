@@ -278,7 +278,7 @@ def main():
 
     user_prompt = True
     
-    with open('data/dailydialog_gen_test.txt', 'r') as f:
+    with open('../data/dailydialog_gen_test.txt', 'r') as f:
         lines = f.read().split('\n')
         lines.remove('')
         
