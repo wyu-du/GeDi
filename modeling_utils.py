@@ -1196,7 +1196,10 @@ class PreTrainedModel(nn.Module, ModuleUtilsMixin):
                 break
 
         if not(gedi_model is None):
-            print("GeDi estimates the probability that it sample is desired class is: " + str(torch.exp(logp_desired[0]).item()))
+            try:
+                print("GeDi estimates the probability that it sample is desired class is: " + str(torch.exp(logp_desired[0]).item()))
+            except:
+                print("GeDi estimates the probability that it sample is desired class is: 0.")
 
         # add eos_token_ids to unfinished sentences
 
