@@ -226,15 +226,11 @@ def main():
         tmp = {'context': raw_text, 'target': target, 'intent': da}
         
         if args.mode=="topic":
-            code = da
-            bpe_tokens = tokenizer.encode(code)
-            print(bpe_tokens)
-            if len(bpe_tokens)>1:
-                print("Warning! number of bpe tokens for " + code + " is greater than 1, model isn't trained for this, generation is less likely to match topic.")
-                args.secondary_code = code
-            else:
-                args.secondary_code = code
+            args.secondary_code = da
         args.prompt = raw_text
+        
+        print('= Prompt =')
+        print(args.prompt)
 
         if args.gen_type=="cclm":
             prefix = tokenizer.encode(args.code_desired)[0]
@@ -249,7 +245,8 @@ def main():
                 text_ids=[prefix]+text_ids
                 start_len = len(tokenizer.decode([prefix]))
         encoded_prompts=torch.LongTensor(text_ids).unsqueeze(0).to(args.device)
-        start_len += encoded_prompts.size(1)
+        print(encoded_prompts.size())
+        start_len += encoded_prompts.size(-1)
 
         if args.gen_type=="gedi" and args.mode=="topic":
             multi_code = tokenizer.encode(args.secondary_code)
@@ -288,9 +285,8 @@ def main():
         text = text[start_len:]
         tmp['generated'] = text
 
-        print("\n")
+        print('= Generation =')
         print(text)
-        print("\n")
         
         outs.append(tmp)
         
