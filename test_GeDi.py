@@ -225,6 +225,9 @@ def main():
         
         if args.mode=="topic":
             args.secondary_code = da
+        if len(raw_text.split()) > args.gen_length:
+            segs = raw_text.split()[:args.gen_length-10]
+            raw_text = ' '.join(segs)
         args.prompt = raw_text
         
         print('= Prompt =')
@@ -281,7 +284,8 @@ def main():
 
         text = tokenizer.decode(generated_sequence.tolist()[0], clean_up_tokenization_spaces=False)
         out = text.replace(raw_text, '')
-        tmp['generated'] = out.strip()
+        out = out.strip()
+        tmp['generated'] = out
 
         print('= Generation =')
         print(out)
