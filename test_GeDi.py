@@ -218,7 +218,7 @@ def main():
         
     outs = []
     for i, line in enumerate(lines):
-        if i>5: break
+        if i > 5: break
         
         raw_text = line.split('\t')[1]
         da = line.split('\t')[0]
@@ -231,6 +231,8 @@ def main():
         
         print('= Prompt =')
         print(args.prompt)
+        print('= Code =')
+        print(args.secondary_code)
 
         if args.gen_type=="cclm":
             prefix = tokenizer.encode(args.code_desired)[0]
@@ -245,7 +247,8 @@ def main():
                 text_ids=[prefix]+text_ids
                 start_len = len(tokenizer.decode([prefix]))
         encoded_prompts=torch.LongTensor(text_ids).unsqueeze(0).to(args.device)
-        start_len += max(len(raw_text.split()), encoded_prompts.size(1))
+        print(encoded_prompts.size(1))
+        start_len = max(len(raw_text.split()), encoded_prompts.size(1))
 
         if args.gen_type=="gedi" and args.mode=="topic":
             multi_code = tokenizer.encode(args.secondary_code)
@@ -281,6 +284,10 @@ def main():
                                           )
 
         text = tokenizer.decode(generated_sequence.tolist()[0], clean_up_tokenization_spaces=True)
+        print('= Raw Generation =')
+        print(text)
+        print()
+        
         segs = text.split()[start_len:]
         text = ' '.join(segs)
         tmp['generated'] = text
