@@ -82,23 +82,80 @@ def proc_and_binarize(dir):
 
     return true_train,false_train,true_test,false_test
 
+
+def proc_and_binarize2(dir):
+    fid = open(dir+ "/dailydialog_dis_train.txt")
+    train= fid.read()
+    train = train.split("\n")[:-1]
+
+    fid = open(dir+ "/dailydialog_dis_test.txt")
+    test = fid.read()
+    test = test.split("\n")[:-1]
+    topics = ["question","inform","directive","commissive"]
+
+    true_test = []
+    false_test = []
+
+    true_train = []
+    false_train = []
+
+    range_arr = list(range(0,len(topics)))
+
+
+    for i in range(0,len(test)):
+        line = test[i].split('\t')
+        if not(len(line) == 2):
+            print("skipping " +str(i))
+            continue
+        
+        label = line[0]
+        text = line[1]
+        label_idx = topics.index(label)
+        choice_array = range_arr[:label_idx]+range_arr[label_idx+1:]
+        ps_label_idx = random.choice(choice_array)
+        ps_label = topics[ps_label_idx]
+
+        true_ex = label + text
+        false_ex = ps_label + text
+        true_test.append(true_ex)
+        false_test.append(false_ex)
+
+    for i in range(0,len(train)):
+        line = train[i].split('\t')
+        if not(len(line) == 2):
+            print("skipping " +str(i))
+            continue
+        
+        label = line[0]
+        text = line[1]
+        label_idx = topics.index(label)
+        choice_array = range_arr[:label_idx]+range_arr[label_idx+1:]
+        ps_label_idx = random.choice(choice_array)
+        ps_label = topics[ps_label_idx]
+
+        true_ex = label + text
+        false_ex = ps_label + text
+        true_train.append(true_ex)
+        false_train.append(false_ex)
+
+    return true_train,false_train,true_test,false_test
+
 def main():
 
-    fid = open("data/AG-news/train.csv")
+#    fid = open("data/AG-news/train.csv")
+#    text_train = fid.read()
+#
+#
+#    fid  = open("data/AG-news/test.csv")
+#    text_test = fid.read()
+#    fid.close()
+#
+#
+#    csv.writer(open("data/AG-news/train.tsv", 'w+'), delimiter='\t').writerows(csv.reader(open("data/AG-news/train.csv")))
+#    csv.writer(open("data/AG-news/dev.tsv", 'w+'), delimiter='\t').writerows(csv.reader(open("data/AG-news/test.csv")))
 
-    text_train = fid.read()
 
-
-    fid  = open("data/AG-news/test.csv")
-    text_test = fid.read()
-    fid.close()
-
-
-    csv.writer(open("data/AG-news/train.tsv", 'w+'), delimiter='\t').writerows(csv.reader(open("data/AG-news/train.csv")))
-    csv.writer(open("data/AG-news/dev.tsv", 'w+'), delimiter='\t').writerows(csv.reader(open("data/AG-news/test.csv")))
-
-
-    true_train, false_train, true_test, false_test = proc_and_binarize("data/AG-news")
+    true_train, false_train, true_test, false_test = proc_and_binarize2("data/dailydialog")
     random.shuffle(true_train)
     random.shuffle(false_train)
     random.shuffle(true_test)
@@ -129,11 +186,11 @@ def main():
     test_split_all= "\n" + "".join(test_lines)
 
 
-    fid = open("data/AG-news/train.tsv",'w')
+    fid = open("data/dailydialog/train.tsv",'w')
     fid.write(train_split_all)
     fid.close()
 
-    fid = open("data/AG-news/dev.tsv",'w')
+    fid = open("data/dailydialog/dev.tsv",'w')
     fid.write(test_split_all)
     fid.close()
 
