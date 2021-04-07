@@ -218,8 +218,6 @@ def main():
         
     outs = []
     for i, line in enumerate(lines):
-        if i > 5: break
-        
         raw_text = line.split('\t')[1]
         da = line.split('\t')[0]
         target = line.split('\t')[2]
@@ -281,13 +279,9 @@ def main():
                                           multi_code=multi_code
                                           )
 
-        text = tokenizer.decode(generated_sequence.tolist()[0], clean_up_tokenization_spaces=True)
-        print('= Raw Generation =')
-        print(text)
-        print()
-        
+        text = tokenizer.decode(generated_sequence.tolist()[0], clean_up_tokenization_spaces=False)
         out = text.replace(raw_text, '')
-        tmp['generated'] = out
+        tmp['generated'] = out.strip()
 
         print('= Generation =')
         print(out)
