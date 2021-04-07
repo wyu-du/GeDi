@@ -286,13 +286,11 @@ def main():
         print(text)
         print()
         
-        sid = len(args.prompt.split())
-        segs = text.split()[sid:]
-        out = ' '.join(segs)
+        out = text.replace(args.prompt, '')
         tmp['generated'] = out
 
         print('= Generation =')
-        print(text)
+        print(out)
         print()
         
         outs.append(tmp)
