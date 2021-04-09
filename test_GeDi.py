@@ -87,7 +87,7 @@ def main():
     parser.add_argument("--no_cuda", action="store_true", help="Avoid using CUDA when available")
 
     ##arguments for generation
-    parser.add_argument("--gen_length", type=int, default=128, help= "generation length")
+    parser.add_argument("--gen_length", type=int, default=60, help= "generation length")
     parser.add_argument("--stop_token", type=str, default=None, help="Token at which text generation is stopped")
     parser.add_argument("--temperature", type=float, default=1.0,
                         help="lower tend toward greedy sampling",
@@ -225,9 +225,6 @@ def main():
         
         if args.mode=="topic":
             args.secondary_code = da
-        if len(raw_text.split()) > args.gen_length:
-            segs = raw_text.split()[:args.gen_length-10]
-            raw_text = ' '.join(segs)
         args.prompt = raw_text
         
         print('= Prompt =')
@@ -255,11 +252,12 @@ def main():
         else:
             multi_code = None
             attr_class = 1
-
+            
+        max_gen_len = args.gen_length + encoded_prompts.size(1)
         generated_sequence = model.generate(
                                           input_ids=encoded_prompts,
                                           pad_lens=None,
-                                          max_length=args.length,
+                                          max_length=max_gen_len,
                                           temperature=args.temperature,
                                           top_k=args.k,
                                           top_p=args.p,
