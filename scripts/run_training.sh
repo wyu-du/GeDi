@@ -1,5 +1,5 @@
 
-export device_id=2
+export device_id=3
 export lambda_=0.80
 export lr=2e-5
 
@@ -9,16 +9,16 @@ CUDA_VISIBLE_DEVICES=$device_id python ../train_GeDi.py --task_name SST-2 \
   --do_eval  \
   --do_train \
   --logit_scale \
-  --data_dir ../data/dailydialog  \
+  --data_dir ../data/dailydialog \
   --max_seq_length 128 \
   --overwrite_cache \
   --per_gpu_train_batch_size 4 \
   --per_gpu_eval_batch_size  8 \
   --learning_rate $lr  \
   --num_train_epochs 10  \
-  --output_dir ../dailydialog_GeDi_retrained \
+  --output_dir ../dailydialog_GeDi_DialoGPT \
   --model_type gpt2  \
-  --model_name_or_path gpt2-medium \
+  --model_name_or_path microsoft/DialoGPT-medium \
   --gen_weight $lambda_ \
   --logging_steps 500 \
   --save_steps 50000 \
