@@ -1,5 +1,5 @@
 
-export device_id=3
+export device_id=1
 
 CUDA_VISIBLE_DEVICES=$device_id python ../test_GeDi.py \
  --gen_length 60 \

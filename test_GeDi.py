@@ -149,14 +149,12 @@ def main():
                 args.gedi_model_name_or_path = "../pretrained_models/gedi_sentiment"
                 if not os.path.isdir(args.gedi_model_name_or_path):
                     raise Exception("GeDi model path not found, must either run `get_models.sh' or set `args.gedi_model_name_or_path'")
-
         if args.class_bias is None:
             args.class_bias = 0.0
 
     if args.mode == "detoxify":
         args.code_desired = "clean"
         args.code_undesired = "dirty"
-
         if not args.gen_type == "gpt2":
             if args.gedi_model_name_or_path is None:
                 args.gedi_model_name_or_path = "../pretrained_models/gedi_detoxifier"
@@ -164,7 +162,6 @@ def main():
                     raise Exception("GeDi model path not found, must either run `get_models.sh' or set `args.gedi_model_name_or_path'")
         if args.class_bias is None:
             args.class_bias = 2.0
-
             if args.target_p<1 and args.target_p>0:
                 inv_p = math.log(args.target_p/(1-args.target_p))+args.class_bias
                 args.target_p = 1/(1+math.exp(-1*inv_p))
@@ -175,7 +172,7 @@ def main():
     args.device = device
     args.model_type = args.model_type.lower()
     config_class, model_class, tokenizer_class = MODEL_CLASSES["gpt2"]
-    tokenizer = tokenizer_class.from_pretrained(args.gen_model_name_or_path,do_lower_case=False)
+    tokenizer = tokenizer_class.from_pretrained("microsoft/DialoGPT-medium",do_lower_case=False)
 
     if args.gen_type == "cclm":
         model = model_class.from_pretrained(args.gedi_model_name_or_path)
